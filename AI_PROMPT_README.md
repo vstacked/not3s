@@ -1,3 +1,13 @@
+AI Workflow Methodology
+
+For this assessment, I utilized a dual-agent workflow to separate architectural planning from code generation:
+
+    Gemini (Lead Architect): Used strictly for high-level architectural planning, validating Clean Architecture boundaries, and reviewing security edge cases before writing code.
+
+    Cursor (Code Generation): Used to generate boilerplate, write tests, and implement logic based on the strict API contracts and architectural plans designed with Gemini.
+
+Below is the log of the primary prompts used for code generation:
+
 ---
 
 Date/Time: 2026-04-22 04:00 WIB
@@ -86,7 +96,7 @@ Tests: 6 new test cases added (auth field length, notes NaN ID, notes title leng
 
 Prompt Used: check on backend, are we already handle like, sql injection? or other edge case → wrap up this plan, then implement it, then added to AI_PROMPT_README.md with mentioning our plan
 
-Commit Hash:
+Commit Hash: 8b6518e608db93bd6aeacdb3a0b57e10287954a0
 
 ---
 
@@ -106,7 +116,7 @@ handle the interceptor to handle token user and save locally using flutter_secur
 
 follow the existing core to generate data & domain, then call the injections
 
-Commit Hash:
+Commit Hash: c66bbe182d4384065846975754124da154de149f
 
 ---
 
@@ -117,6 +127,7 @@ Task: Generate theme via Stitch MCP, build auth presentation layer, then refine 
 Prompt Used: use Stich MCP to generate theme of this flutter apps, then move to login/register page in same file, but using state for change each view. extract the small components for reduce redundancy
 
 Plan executed:
+
 1. Created Stitch project `not3s` (projects/12196017803135880158)
 2. Created `not3s Design System` via Stitch MCP:
    - Initial color mode: DARK, Seed: #6C63FF (indigo-violet), Variant: TONAL_SPOT
@@ -131,14 +142,14 @@ Plan executed:
 8. Created `features/auth/presentation/pages/auth_page.dart` — single file, state-based login/register view switching
 9. Updated router, main.dart, auth_injections.dart
 10. Added google_fonts to pubspec.yaml
---- Additional changes (NOT from original Prompt Used) ---
+    --- Additional changes (NOT from original Prompt Used) ---
 11. [EXTRA] Updated `core/styles/app_colors.dart` hex palette to light-mode values (background/surface/text/border/hint/divider/error)
 12. [EXTRA] Added outside-tap keyboard dismiss behavior on `features/auth/presentation/pages/auth_page.dart`
 13. [EXTRA] Moved auth mode source of truth from local widget state into `AuthBloc` state/event flow
 14. [EXTRA] Removed deprecated `AuthReset` event/handler after mode migration cleanup
 15. [EXTRA] Hardened `AuthState.mode` initialization to avoid null mode runtime crash
 
-Commit Hash:
+Commit Hash: 827d315819586ace5472e08af52d78330471113f
 
 ---
 
@@ -149,6 +160,7 @@ Task: Slice welcome page (/ route) and notes list page (/notes route) from Stitc
 Prompt Used: from MCP, slice the notes page & welcome page(/ route), add concern about make small parts component/ shared components
 
 Plan executed:
+
 1. Generated Welcome/Splash screen via Stitch MCP (Gemini 3.1 Pro) — dark bg, logo, tagline, Get Started + Login buttons
 2. Generated Notes List screen via Stitch MCP — app bar, search bar, note cards, empty state, FAB
 3. Grew shared component library (core/widgets/):
@@ -160,14 +172,14 @@ Plan executed:
 4. Created NotesBloc (event/state/bloc):
    - Events: NotesLoad, NotesSearch, NotesCreate, NotesUpdate, NotesDelete
    - States: NotesInitial, NotesLoading, NotesLoaded (with displayNotes filter), NotesActionLoading, NotesFailure
-5. Created WelcomePage (/ route): hero section, _AppIcon, _HeroSection, _ActionButtons — all private components
-6. Created NotesPage (/notes route): _NotesAppBar, _SearchSection, _NotesList, _NoteSheet (create/edit bottom sheet), _SheetHeader — all private components
+5. Created WelcomePage (/ route): hero section, \_AppIcon, \_HeroSection, \_ActionButtons — all private components
+6. Created NotesPage (/notes route): \_NotesAppBar, \_SearchSection, \_NotesList, \_NoteSheet (create/edit bottom sheet), \_SheetHeader — all private components
 7. Updated router.dart — added AppRoutes.welcome (/), all routes wired
 8. Updated main.dart — initialRoute: AppRoutes.welcome
 9. Updated notes_injections.dart — registers NotesBloc as factory
 10. Fixed NoParams to add const constructor
 
-Commit Hash:
+Commit Hash: 87d6783d66e2a7c492719c44f84d90a73760a705
 
 ---
 
@@ -178,6 +190,7 @@ Task: Check stored JWT on startup — redirect to /notes if valid, /welcome if n
 Prompt Used: check token from local, if exist and not expired, can just direct and replace routes to notes page
 
 Plan executed:
+
 1. Created `core/utils/jwt_utils.dart` — pure Dart JWT decode (no extra package):
    - Decodes base64url payload from the 2nd JWT segment
    - `isTokenValid(token)` checks: token not null/empty, `exp` claim present, not expired (with 10s skew buffer)
@@ -191,7 +204,7 @@ Plan executed:
 5. Updated `main.dart` initialRoute → AppRoutes.splash
 6. NotesPage logout already used AppRoutes.welcome so no change needed there
 
-Commit Hash:
+Commit Hash: 827d315819586ace5472e08af52d78330471113f
 
 ---
 
@@ -202,13 +215,14 @@ Task: Add updated_at field to NoteCard and propagate through all layers
 Prompt Used: add updated_at for @flutter_app/lib/core/widgets/note_card.dart
 
 Changes:
+
 1. backend/src/services/notes.service.ts — added `updated_at` to `Note` interface and SELECT query
 2. flutter_app/lib/features/notes/domain/entities/note_entity.dart — added `updatedAt: DateTime` field
 3. flutter_app/lib/features/notes/data/models/note_model.dart — parse `updated_at` from JSON with SQLite timestamp normalisation
 4. flutter_app/lib/core/utils/date_formatter.dart — new utility: formatRelativeTime() (no extra package)
 5. flutter_app/lib/core/widgets/note_card.dart — added `_NoteTimestamp` sub-widget showing relative time with a clock icon
 
-Commit Hash:
+Commit Hash: 827d315819586ace5472e08af52d78330471113f
 
 ---
 
@@ -217,5 +231,15 @@ Date/Time: 2026-04-22 14:30 WIB
 Task: Write unit, widget, and integration tests for the Flutter app
 
 Prompt Used: write tests in flutter_app, unit and integration tests, also add some edge-cases test
+
+Commit Hash: f7e247e4ed9286dde17b2df1fbebfcfe677d97c2
+
+---
+
+Date/Time: 2026-04-22 14:44 WIB
+
+Task: Generate comprehensive README.md for the repository
+
+Prompt Used: Act as a Senior Developer writing the final documentation for a technical assessment. I need you to generate a comprehensive README.md for this repository. Please scan the backend and flutter_app directories to accurately document the stack and run commands. CRITICAL REQUIREMENTS (Must be included): Project Overview: Briefly explain this is a simple Note App (Flutter/BLoC frontend, Node.js/SQLite backend). Tech Stack Summary: List the key technologies used (e.g., Flutter 3.x, BLoC, Dio, Node.js, Express, better-sqlite3). Local Setup Steps: Provide exact, copy-pasteable terminal commands to run both the backend (yarn install, yarn dev) and the frontend (flutter pub get, flutter run). Database Seeding: Explicitly state that the SQLite database migrations and seeding (creating sample users and notes) run automatically when the backend starts. Sample Login: Provide the dummy account credentials clearly at the top (e.g., Username: alice, Password: password123). AI Methodology: Add a section mentioning that AI was used during development as a pair-programming tool, and direct the reviewer to the AI_PROMPT_README.md file for the full methodology and prompt history. Please format this cleanly with standard Markdown headers, code blocks for commands, and bullet points for readability. Do not invent any features we didn't build.
 
 Commit Hash:
