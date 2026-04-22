@@ -6,6 +6,7 @@ import 'package:not3s/features/auth/data/repositories/auth_repository_impl.dart'
 import 'package:not3s/features/auth/domain/repositories/auth_repository.dart';
 import 'package:not3s/features/auth/domain/usecases/login_usecase.dart';
 import 'package:not3s/features/auth/domain/usecases/register_usecase.dart';
+import 'package:not3s/features/auth/presentation/bloc/auth_bloc.dart';
 
 Future<void> initAuthInjections() async {
   // Data source
@@ -24,4 +25,12 @@ Future<void> initAuthInjections() async {
   // Use cases
   sl.registerLazySingleton(() => RegisterUseCase(sl<AuthRepository>()));
   sl.registerLazySingleton(() => LoginUseCase(sl<AuthRepository>()));
+
+  // BLoC — factory so each AuthPage gets a fresh instance
+  sl.registerFactory(
+    () => AuthBloc(
+      loginUseCase: sl<LoginUseCase>(),
+      registerUseCase: sl<RegisterUseCase>(),
+    ),
+  );
 }

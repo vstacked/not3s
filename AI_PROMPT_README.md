@@ -107,3 +107,35 @@ handle the interceptor to handle token user and save locally using flutter_secur
 follow the existing core to generate data & domain, then call the injections
 
 Commit Hash:
+
+---
+
+Date/Time: 2026-04-22 11:55 WIB
+
+Task: Generate theme via Stitch MCP, build auth presentation layer, then refine light theme and auth mode handling in BLoC
+
+Prompt Used: use Stich MCP to generate theme of this flutter apps, then move to login/register page in same file, but using state for change each view. extract the small components for reduce redundancy
+
+Plan executed:
+1. Created Stitch project `not3s` (projects/12196017803135880158)
+2. Created `not3s Design System` via Stitch MCP:
+   - Initial color mode: DARK, Seed: #6C63FF (indigo-violet), Variant: TONAL_SPOT
+   - Headline font: Space Grotesk, Body/Label: Inter, Roundness: ROUND_EIGHT
+3. Generated Login/Register mobile screen via Stitch (Gemini 3.1 Pro)
+4. Updated `core/styles/app_theme.dart` — switched ThemeData to Material 3 light mode
+5. Created `core/styles/app_colors.dart` — centralized color constants
+6. Extracted small shared components:
+   - `core/widgets/app_text_field.dart` — AppTextField
+   - `core/widgets/app_button.dart` — AppButton (full-width, loading state)
+7. Added AuthBloc presentation layer (bloc/event/state)
+8. Created `features/auth/presentation/pages/auth_page.dart` — single file, state-based login/register view switching
+9. Updated router, main.dart, auth_injections.dart
+10. Added google_fonts to pubspec.yaml
+--- Additional changes (NOT from original Prompt Used) ---
+11. [EXTRA] Updated `core/styles/app_colors.dart` hex palette to light-mode values (background/surface/text/border/hint/divider/error)
+12. [EXTRA] Added outside-tap keyboard dismiss behavior on `features/auth/presentation/pages/auth_page.dart`
+13. [EXTRA] Moved auth mode source of truth from local widget state into `AuthBloc` state/event flow
+14. [EXTRA] Removed deprecated `AuthReset` event/handler after mode migration cleanup
+15. [EXTRA] Hardened `AuthState.mode` initialization to avoid null mode runtime crash
+
+Commit Hash:

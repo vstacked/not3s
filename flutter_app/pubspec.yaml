@@ -32,6 +32,9 @@ dependencies:
   # Secure local storage (token persistence)
   flutter_secure_storage: ^9.0.0
 
+  # Google Fonts (Space Grotesk + Inter)
+  google_fonts: ^6.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
