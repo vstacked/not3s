@@ -51,3 +51,23 @@ seed sample data for the first time or can by auto-run on startup.
 2nd, write integration tests using jest & supertest, also handle the edge-cases when the output is not success
 
 Commit Hash: a0db0e11106da1638b3c5c1bab83c9d05ba47198
+
+---
+
+Date/Time: 2026-04-22 11:30 WIB
+
+Task: Implement data & domain layers for auth and notes features in flutter_app with secure token storage
+
+Prompt Used: flutter_app,
+
+implement the data & domain on each feature, we need to:
+data sources [data]
+repositores [data]
+repositores [domain]
+use cases [domain]
+
+handle the interceptor to handle token user and save locally using flutter_secure_storage.
+
+follow the existing core to generate data & domain, then call the injections
+
+Commit Hash:

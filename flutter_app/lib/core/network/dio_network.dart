@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:not3s/core/network/auth_interceptor.dart';
 
 class DioNetwork {
   static Dio? _dio;
@@ -8,7 +9,7 @@ class DioNetwork {
     return _dio!;
   }
 
-  static Dio _createDio() {
+  static Dio _createDio({AuthInterceptor? authInterceptor}) {
     final dio = Dio(
       BaseOptions(
         baseUrl: const String.fromEnvironment(
@@ -21,6 +22,10 @@ class DioNetwork {
       ),
     );
 
+    if (authInterceptor != null) {
+      dio.interceptors.add(authInterceptor);
+    }
+
     dio.interceptors.add(
       LogInterceptor(requestBody: true, responseBody: true),
     );
@@ -28,7 +33,7 @@ class DioNetwork {
     return dio;
   }
 
-  static void initDio() {
-    _dio = _createDio();
+  static void initDio({AuthInterceptor? authInterceptor}) {
+    _dio = _createDio(authInterceptor: authInterceptor);
   }
 }
