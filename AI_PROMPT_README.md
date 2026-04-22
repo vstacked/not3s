@@ -11,7 +11,7 @@ while for backend from [https://github.com/w3tecch/express-typescript-boilerplat
 
 do it with minimal setup first, and makesure separate the scope (backend & flutter_app)
 
-Commit Hash:
+Commit Hash: d9590fa8b0317f17c85f89794c3fe5ac0d2d6184
 
 ---
 
@@ -36,4 +36,4 @@ made the notes attach to account that logged in, so we use bearer token for vali
 for backend, create endpoint based on this contract while generate Swagger documentation after finished.
 for flutter_app, create models based this contract on features scope [data & domain]
 
-Commit Hash: d9590fa8b0317f17c85f89794c3fe5ac0d2d6184
+Commit Hash: 94bea78950441308fd1259259171156607d49516
