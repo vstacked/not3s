@@ -139,3 +139,73 @@ Plan executed:
 15. [EXTRA] Hardened `AuthState.mode` initialization to avoid null mode runtime crash
 
 Commit Hash:
+
+---
+
+Date/Time: 2026-04-22 13:20 WIB
+
+Task: Slice welcome page (/ route) and notes list page (/notes route) from Stitch MCP designs, grow shared component library
+
+Prompt Used: from MCP, slice the notes page & welcome page(/ route), add concern about make small parts component/ shared components
+
+Plan executed:
+1. Generated Welcome/Splash screen via Stitch MCP (Gemini 3.1 Pro) — dark bg, logo, tagline, Get Started + Login buttons
+2. Generated Notes List screen via Stitch MCP — app bar, search bar, note cards, empty state, FAB
+3. Grew shared component library (core/widgets/):
+   - AppButton — added `variant` param (filled / outlined), optional `icon` param
+   - AppSearchBar — dedicated search input with live clear button
+   - NoteCard — note list item (title, preview 2 lines, delete icon)
+   - EmptyState — reusable empty/zero-state slot (icon, title, subtitle)
+   - AppConfirmDialog — `showAppConfirmDialog()` utility for destructive confirmations
+4. Created NotesBloc (event/state/bloc):
+   - Events: NotesLoad, NotesSearch, NotesCreate, NotesUpdate, NotesDelete
+   - States: NotesInitial, NotesLoading, NotesLoaded (with displayNotes filter), NotesActionLoading, NotesFailure
+5. Created WelcomePage (/ route): hero section, _AppIcon, _HeroSection, _ActionButtons — all private components
+6. Created NotesPage (/notes route): _NotesAppBar, _SearchSection, _NotesList, _NoteSheet (create/edit bottom sheet), _SheetHeader — all private components
+7. Updated router.dart — added AppRoutes.welcome (/), all routes wired
+8. Updated main.dart — initialRoute: AppRoutes.welcome
+9. Updated notes_injections.dart — registers NotesBloc as factory
+10. Fixed NoParams to add const constructor
+
+Commit Hash:
+
+---
+
+Date/Time: 2026-04-22 13:35 WIB
+
+Task: Check stored JWT on startup — redirect to /notes if valid, /welcome if not
+
+Prompt Used: check token from local, if exist and not expired, can just direct and replace routes to notes page
+
+Plan executed:
+1. Created `core/utils/jwt_utils.dart` — pure Dart JWT decode (no extra package):
+   - Decodes base64url payload from the 2nd JWT segment
+   - `isTokenValid(token)` checks: token not null/empty, `exp` claim present, not expired (with 10s skew buffer)
+2. Created `features/splash/presentation/pages/splash_page.dart`:
+   - FadeIn animation (600ms) + minimum display time (800ms) via Future.wait
+   - Reads token from StorageService → calls isTokenValid
+   - Valid token → pushNamedAndRemoveUntil('/notes') — replaces full stack
+   - No token or expired → pushNamedAndRemoveUntil('/welcome')
+3. Moved `/` route to SplashPage; WelcomePage moved to `/welcome`
+4. Updated `AppRoutes`: splash='/', welcome='/welcome', auth='/auth', notes='/notes'
+5. Updated `main.dart` initialRoute → AppRoutes.splash
+6. NotesPage logout already used AppRoutes.welcome so no change needed there
+
+Commit Hash:
+
+---
+
+Date/Time: 2026-04-22 14:00 WIB
+
+Task: Add updated_at field to NoteCard and propagate through all layers
+
+Prompt Used: add updated_at for @flutter_app/lib/core/widgets/note_card.dart
+
+Changes:
+1. backend/src/services/notes.service.ts — added `updated_at` to `Note` interface and SELECT query
+2. flutter_app/lib/features/notes/domain/entities/note_entity.dart — added `updatedAt: DateTime` field
+3. flutter_app/lib/features/notes/data/models/note_model.dart — parse `updated_at` from JSON with SQLite timestamp normalisation
+4. flutter_app/lib/core/utils/date_formatter.dart — new utility: formatRelativeTime() (no extra package)
+5. flutter_app/lib/core/widgets/note_card.dart — added `_NoteTimestamp` sub-widget showing relative time with a clock icon
+
+Commit Hash:

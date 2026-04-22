@@ -8,12 +8,20 @@ import 'package:not3s/core/widgets/app_text_field.dart';
 import 'package:not3s/features/auth/presentation/bloc/auth_bloc.dart';
 
 class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+  const AuthPage({super.key, this.initialMode});
+
+  final String? initialMode;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<AuthBloc>(),
+      create: (_) {
+        final bloc = sl<AuthBloc>();
+        if (initialMode?.toLowerCase() == 'register') {
+          bloc.add(const AuthModeChanged(mode: AuthMode.register));
+        }
+        return bloc;
+      },
       child: const _AuthView(),
     );
   }
@@ -78,7 +86,8 @@ class _AuthViewState extends State<_AuthView> {
                 );
                 _changeMode(AuthMode.login);
               } else {
-                Navigator.pushReplacementNamed(context, '/notes');
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/notes', (_) => false);
               }
             }
           },

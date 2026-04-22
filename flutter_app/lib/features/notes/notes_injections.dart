@@ -7,6 +7,7 @@ import 'package:not3s/features/notes/domain/usecases/create_note_usecase.dart';
 import 'package:not3s/features/notes/domain/usecases/delete_note_usecase.dart';
 import 'package:not3s/features/notes/domain/usecases/get_notes_usecase.dart';
 import 'package:not3s/features/notes/domain/usecases/update_note_usecase.dart';
+import 'package:not3s/features/notes/presentation/bloc/notes_bloc.dart';
 
 Future<void> initNotesInjections() async {
   // Data source
@@ -24,4 +25,14 @@ Future<void> initNotesInjections() async {
   sl.registerLazySingleton(() => CreateNoteUseCase(sl<NotesRepository>()));
   sl.registerLazySingleton(() => UpdateNoteUseCase(sl<NotesRepository>()));
   sl.registerLazySingleton(() => DeleteNoteUseCase(sl<NotesRepository>()));
+
+  // BLoC — factory so each NotesPage gets a fresh instance
+  sl.registerFactory(
+    () => NotesBloc(
+      getNotesUseCase: sl<GetNotesUseCase>(),
+      createNoteUseCase: sl<CreateNoteUseCase>(),
+      updateNoteUseCase: sl<UpdateNoteUseCase>(),
+      deleteNoteUseCase: sl<DeleteNoteUseCase>(),
+    ),
+  );
 }

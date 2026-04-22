@@ -5,12 +5,15 @@ export interface Note {
   id: number;
   title: string;
   content: string;
+  updated_at: string;
 }
 
 export const notesService = {
   getAll(userId: number): Note[] {
     return db
-      .prepare('SELECT id, title, content FROM notes WHERE user_id = ?')
+      .prepare(
+        'SELECT id, title, content, updated_at FROM notes WHERE user_id = ? ORDER BY updated_at DESC, id DESC',
+      )
       .all(userId) as Note[];
   },
 

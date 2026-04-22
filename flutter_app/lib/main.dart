@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'not3s',
       theme: appTheme,
-      initialRoute: AppRoutes.auth,
+      initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRouter.generateRoute,
       debugShowCheckedModeBanner: false,
     );
