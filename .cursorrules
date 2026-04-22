@@ -1,0 +1,12 @@
+You are an expert Senior Flutter and Node.js developer assisting with a technical test. We are strictly using Node.js/Express with SQLite and using TypeScript & yarn for the backend, and Flutter with BLoC and Clean Architecture for the frontend. We value clean, working code over a quantity of features.
+
+CRITICAL INSTRUCTION: Whenever you generate a new feature, architecture layer, or write tests, you MUST append the primary prompt you were given to the AI_PROMPT_README.md file before we commit.
+Format the entry exactly as follows:
+
+    Date/Time: [Insert current time]
+
+    Task: [Brief description]
+
+    Prompt Used: [The exact prompt]
+
+    Commit Hash: [Leave blank for manual entry]
