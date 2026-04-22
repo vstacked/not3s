@@ -54,6 +54,42 @@ Commit Hash: a0db0e11106da1638b3c5c1bab83c9d05ba47198
 
 ---
 
+Date/Time: 2026-04-22 11:20 WIB
+
+Task: Security hardening — fix edge cases identified in backend audit
+
+Plan identified 5 issues. All were implemented:
+
+1. NaN guard on :id path param (notes PUT/DELETE)
+   - parseInt("abc") → NaN was silently passed to SQLite as NULL, causing a phantom 404
+   - Fix: explicit isNaN(id) check → 400 "Note ID must be a number"
+
+2. Input length validation (auth + notes controllers)
+   - username: max 50 chars
+   - password: min 8, max 128 chars
+   - title: max 200 chars, content: max 10,000 chars
+   - Fix: length guards added in each controller before hitting the service
+
+3. Body size limit (app.ts)
+   - express.json() previously accepted unlimited payloads
+   - Fix: express.json({ limit: "50kb" }) and urlencoded({ limit: "50kb" })
+
+4. JWT_SECRET production startup guard (server.ts)
+   - Server booted silently with a weak hardcoded fallback if JWT_SECRET was unset
+   - Fix: process.exit(1) with fatal log when NODE_ENV=production and JWT_SECRET is missing
+
+5. Rate limiting on auth routes
+   - POST /auth/login and /auth/register had no throttle (brute-force risk)
+   - Fix: express-rate-limit, 20 requests per 15 min window, skipped in NODE_ENV=test
+
+Tests: 6 new test cases added (auth field length, notes NaN ID, notes title length) — 36 total, all passing.
+
+Prompt Used: check on backend, are we already handle like, sql injection? or other edge case → wrap up this plan, then implement it, then added to AI_PROMPT_README.md with mentioning our plan
+
+Commit Hash:
+
+---
+
 Date/Time: 2026-04-22 11:30 WIB
 
 Task: Implement data & domain layers for auth and notes features in flutter_app with secure token storage

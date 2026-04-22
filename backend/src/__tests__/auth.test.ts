@@ -42,6 +42,33 @@ describe('POST /api/auth/register', () => {
     expect(res.body).toHaveProperty('error');
   });
 
+  it('400 — username exceeds 50 characters', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ username: 'a'.repeat(51), password: 'password123' });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('error');
+  });
+
+  it('400 — password shorter than 8 characters', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ username: 'alice', password: 'short' });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('error');
+  });
+
+  it('400 — password exceeds 128 characters', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ username: 'alice', password: 'a'.repeat(129) });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('error');
+  });
+
   it('400 — duplicate username', async () => {
     await request(app)
       .post('/api/auth/register')

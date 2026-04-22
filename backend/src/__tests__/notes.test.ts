@@ -121,6 +121,16 @@ describe('POST /api/notes', () => {
     expect(res.body).toHaveProperty('error');
   });
 
+  it('400 — title exceeds 200 characters', async () => {
+    const res = await request(app)
+      .post('/api/notes')
+      .set('Authorization', `Bearer ${tokenAlice}`)
+      .send({ title: 'a'.repeat(201), content: 'Valid content' });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('error');
+  });
+
   it('401 — no token', async () => {
     const res = await request(app)
       .post('/api/notes')
@@ -196,6 +206,16 @@ describe('PUT /api/notes/:id', () => {
     expect(res.body).toHaveProperty('error');
   });
 
+  it('400 — non-numeric ID', async () => {
+    const res = await request(app)
+      .put('/api/notes/abc')
+      .set('Authorization', `Bearer ${tokenAlice}`)
+      .send({ title: 'Updated', content: 'Updated content' });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('error');
+  });
+
   it('404 — note does not exist', async () => {
     const res = await request(app)
       .put('/api/notes/99999')
@@ -252,6 +272,15 @@ describe('DELETE /api/notes/:id', () => {
   it('401 — no token', async () => {
     const res = await request(app).delete(`/api/notes/${noteId}`);
     expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty('error');
+  });
+
+  it('400 — non-numeric ID', async () => {
+    const res = await request(app)
+      .delete('/api/notes/abc')
+      .set('Authorization', `Bearer ${tokenAlice}`);
+
+    expect(res.status).toBe(400);
     expect(res.body).toHaveProperty('error');
   });
 
