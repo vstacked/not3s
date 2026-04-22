@@ -14,7 +14,7 @@ class DioNetwork {
       BaseOptions(
         baseUrl: const String.fromEnvironment(
           'API_BASE_URL',
-          defaultValue: 'http://10.0.2.2:3000/api',
+          defaultValue: 'http://172.30.250.49:3000/api',
         ),
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),

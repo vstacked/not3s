@@ -209,3 +209,13 @@ Changes:
 5. flutter_app/lib/core/widgets/note_card.dart — added `_NoteTimestamp` sub-widget showing relative time with a clock icon
 
 Commit Hash:
+
+---
+
+Date/Time: 2026-04-22 14:30 WIB
+
+Task: Write unit, widget, and integration tests for the Flutter app
+
+Prompt Used: write tests in flutter_app, unit and integration tests, also add some edge-cases test
+
+Commit Hash:
