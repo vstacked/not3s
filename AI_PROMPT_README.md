@@ -37,3 +37,17 @@ for backend, create endpoint based on this contract while generate Swagger docum
 for flutter_app, create models based this contract on features scope [data & domain]
 
 Commit Hash: 94bea78950441308fd1259259171156607d49516
+
+---
+
+Date/Time: 2026-04-22 10:30 WIB
+
+Task: Seed sample data on startup and write integration tests with Jest & Supertest covering edge cases
+
+Prompt Used: backend,
+
+seed sample data for the first time or can by auto-run on startup.
+
+2nd, write integration tests using jest & supertest, also handle the edge-cases when the output is not success
+
+Commit Hash:
