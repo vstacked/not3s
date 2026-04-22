@@ -171,6 +171,6 @@ For the full methodology, every prompt used, and a breakdown of what was AI-assi
 
 In addition to the local setup, this project has been fully deployed for immediate testing:
 
-    Production API (Node.js/SQLite): Hosted on Render at [https://not3s.onrender.com/api](https://not3s.onrender.com/api)
+Production API (Node.js/SQLite): Hosted on Render at [https://not3s.onrender.com/api](https://not3s.onrender.com/api)
 
-    Android APK (CI/CD): Built via Codemagic. You can download the release artifact here: [Download APK](https://github.com/vstacked/not3s/releases/download/1.0.0/app-release.apk)
+Android APK (CI/CD): Built via Codemagic. You can download the release artifact here: [Download APK](https://github.com/vstacked/not3s/releases/download/1.0.0/app-release.apk)
